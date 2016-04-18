@@ -14,6 +14,8 @@
                         (cardio (you are in the cardio room. you see a fat sweaty man running on the treadmill. you cannot get gains doing cardio))
                         (weight(you are in the free weight rooms. there is where you get your bicep curls in for them swoll arms.))
                         (platform(you are in the platform room. squats and deadlifts are done here. you hear the loud noise of people dropping heavy weights on the ground))
+			(office (this is the bosses office))
+			(private (this is the bosses private lifting room. you see him sitting on the chair doing some 10 lb bicep curls. weak! do he even lift? challenge this myrin to a lift off!))
 ))
 
 ;;find the correct item in the list of locations
@@ -25,9 +27,11 @@
                         (lockers (pools east door) (entrance west door))
                         (cardio (entrance east door))
                         (pools (lockers west door))
-			(weight(platform east door)(benches west door))
+			(weight(platform east door)(benches west door)(office upstairs door))
 		         (platform (weight west door))
 			  (benches(weight east door))
+			(office (weight downstairs door) (private north door))
+
 ))
 
 ;;given the edge, describe the path
