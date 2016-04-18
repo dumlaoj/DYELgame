@@ -44,8 +44,8 @@
 (defparameter *objects* '(whiskey bucket frog chain plate exodia left-arm right-arm left-leg right-leg ancient-coin))
 
 ;;global variable containing the location of each object
-(defparameter *object-locations* '((whiskey entrance)
-                                   (bucket pools)
+(defparameter *object-locations* '((whiskey entrance chair)
+                                   (bucket living-room)
                                    (exodia living-room)
                                    (chain garden)
                                    (left-arm garden)
@@ -70,9 +70,9 @@
 
 ;;describes objects at a given location
 (defun describe-objects (loc objs obj-loc)
-  (labels ((describe-obj (obj) ;creates local function
-             `(you see a ,obj))) ;returns text about the object	
-    (apply #'append (mapcar #'describe-obj (objects-at loc objs obj-loc))))) ;appends all existing objects at loc into a list
+  (labels ((describe-obj (obj obj-loc) ;creates local function
+             `(you see a ,obj on the ,obj-loc))) ;returns text about the object	
+    (apply #'append (mapcar #'describe-obj ((objects-at loc objs obj-loc) (cdr (cdr obj-loc))))))) ;appends all existing objects at loc into a list
 
 ;;default location
 (defparameter *location* 'entrance)
