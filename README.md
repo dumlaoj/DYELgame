@@ -1,3 +1,6 @@
+![Alt text](/poster.jpg?raw=true "suh dude ")
+
+
 ### WHAT IS THIS?
 
 A text based game for ICS 313.
