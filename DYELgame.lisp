@@ -103,7 +103,7 @@
                  (look))
           '(you cannot go that way.)))))
 
-
+(defparameter *strength* 0)
 ;;picks up desired object
 (defun pickup (object)
   (cond ((and(eq object 'protein-shake) (member object (objects-at *location* *objects* *object-locations*)))
@@ -182,11 +182,13 @@
 
 ;;;special actions section
 
+(defparameter *gym-bro* 't)
 ;;macro to challenge the boss
 ;;must have all items to challenge
 (game-action challenge towel boss private
-             (cond ((not (gym-bro)) '(you need to get all the items!))
+             (cond ((not *gym-bro*) '(you need to get all the items!))
                    (t '(you challenged the boss))))
+
 
 ;;checks if user has all items
 (defun gym-bro()
