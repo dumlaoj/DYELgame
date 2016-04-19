@@ -2,6 +2,9 @@
 ;;;; Name: Jordan Dumlao                     Date:03/19/2016
 ;;;; Course: ICS313        Assignment:#5
 ;;;; This code has been taken from Chapter 5 of  Land of Lisp by Conrad Barski
+
+
+
 (defparameter +ID+ "Jordan Dumlao")
 (defun ID ()
   +ID+)
@@ -14,8 +17,8 @@
                         (cardio (you are in the cardio room. you see a fat sweaty man running on the treadmill. you cannot get gains doing cardio))
                         (weight(you are in the free weight rooms. there is where you get your bicep curls in for them swoll arms.))
                         (platform(you are in the platform room. squats and deadlifts are done here. you hear the loud noise of people dropping heavy weights on the ground))
-			(office (this is the bosses office))
-			(private (this is the bosses private lifting room. you see him sitting on the chair doing some 10 lb bicep curls. weak! do he even lift? challenge this myrin to a lift off!))
+			(office (this is the bosses office.))
+			(private (this is the bosses private lifting room. you see the boss sitting on the chair doing some 10 lb bicep curls. weak! do he even lift? challenge this myrin to a lift off!))
 ))
 
 ;;find the correct item in the list of locations
@@ -27,10 +30,11 @@
                         (lockers (pools east door) (entrance west door))
                         (cardio (entrance east door))
                         (pools (lockers west door))
-			(weight(platform east door)(benches west door)(office upstairs door))
+			(weight(platform east door)(benches west door)(office upstairs door)(entrance south door))
 		         (platform (weight west door))
 			  (benches(weight east door))
 			(office (weight downstairs door) (private north door))
+                        (private (office south door))
 
 ))
 
@@ -50,17 +54,16 @@
 ;;global variable containing the location of each object
 (defparameter *object-locations* '((towel entrance)
                                    (protein-shake entrance)
-                                   (protein-shake lockers)
-                                   (protein-shake weight)
-                                   (protein-shake platform)
-                                   (protein-shake benches)
+                                   ;(protein-shake lockers)
+                                   ;(protein-shake weight)
+                                   ;(protein-shake platform)
+                                   ;(protein-shake benches)
                                    (joggers lockers)
                                    (tank-top lockers)
                                    (shoes cardio)
                                    (gloves weight)
                                    (squat-belt platform)
                                    (wrist-straps benches)
-                                   (key office)
                                  ))
 
 
@@ -100,9 +103,12 @@
                  (look))
           '(you cannot go that way.)))))
 
+
 ;;picks up desired object
 (defun pickup (object)
-  (cond ((member object (objects-at *location* *objects* *object-locations*)) ;must be a member of that location
+  (cond ((and(eq object 'protein-shake) (member object (objects-at *location* *objects* *object-locations*)))
+         (setf *strength* (+ *strength* 100)) (push (list object 'shakes) *object-locations*) `(you drank a protein shake your strength is now ,*strength*))
+   ((member object (objects-at *location* *objects* *object-locations*)) ;must be a member of that location
          (push (list object 'body) *object-locations*) ;push onto list body the current object being picked up
          `(you are now carrying the ,object)) ;returns object that is being picked up
         (t '(you cannot get that.)))) ;if object is not there
@@ -135,7 +141,7 @@
              (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
 
 ;;allowed commands the user can choose from
-(defparameter *allowed-commands* '(look walk pickup inventory weld dunk assemble help h location object edge))
+(defparameter *allowed-commands* '(look walk pickup inventory weld dunk assemble help h location object edge challenge))
 
 ;;checks if the first word is allowed in the commands
 (defun game-eval (sexp)
@@ -166,62 +172,26 @@
 ;;checks to see if user has subject and object
 ;;is in current location
 ;;then runs rest of body macro according to command
-(defmacro game-action (command subj place &body body)
-  `(progn (defun ,command (subject object)
+(defmacro game-action (command subj obj place &body body)
+  `(progn (defun ,command (object)
             (if (and (eq *location* ',place)
-                     (eq subject ',subj)
-                     (have ',subj))
+                     (eq object ',obj))
                 ,@body
             '(i cant ,command like that.)))
           (pushnew ',command *allowed-commands*)))
 
-(defparameter *door-unlocked* nil)
+;;;special actions section
 
-;;;wizard special actions section
-;;game-action macro to weld chain and bucket
-;;check if have bucket and chain isnt welded
-;;set chain-welded to true and tell user success
-(game-action use key office
-             (if (and (have 'key) (not *door-unlocked*))
-                 (progn (setf *door-unlocked* 't)
-                        '(you have unlocked the room in the office))
-               '(you need the key)))
+;;macro to challenge the boss
+;;must have all items to challenge
+(game-action challenge towel boss private
+             (cond ((not (gym-bro)) '(you need to get all the items!))
+                   (t '(you challenged the boss))))
 
-(defparameter *bucket-filled* nil)
-
-;;game-action macro to dunk bucket into well
-;;need chain to be welded
-(game-action dunk  well garden
-             (if *chain-welded* 
-                 (progn (setf *bucket-filled* 't)
-                        '(the bucket is now full of water))
-               '(the water level is too low to reach.)))
-
-;;macro to splash water onto wizard
-;;must have bucket filled with water
-;;game will win or lose depending on 
-;;if have frog
-(game-action splash bucket living-room
-             (cond ((not *bucket-filled*) '(the bucket has nothing in it.))
-                   ((have 'frog) '(the wizard awakens and sees that you stole his frog. 
-                                   he is so upset he banishes you to the 
-                                   netherworlds- you lose! the end.))
-                   (t '(the wizard awakens from his slumber and greets you warmly. 
-                        he hands you the magic low-carb donut- you win! the end.))))
-
-
-(defparameter *swole-bro* nil)
-;;checks if user has all limbs
-(defun has-limbs()
-  (if(and (have 'towel) (have 'joggers) (have 'tank-top) (have 'showes) (have 'wrist-straps) (have 'gloves) (have 'squat-belt)) 't
+;;checks if user has all items
+(defun gym-bro()
+  (if(and (have 'towel) (have 'joggers) (have 'tank-top) (have 'gloves) (have 'squat-belt) (have 'wrist-straps) (have 'shoes)) 't
     nil))
-;;if user has all limbs and exodia is not assembled
-;;assemble Exodia
-(game-action assemble exodia attic
-  (if (and (has-limbs)(not *exodia-assembled*)) 
-                 (progn (setf *exodia-assembled* 't)
-                        '(you have assembled exodia the forbidden one! you can now obliterate your opponents))
-               '(exodia has already been assembled.)))
             
 (defun help()
   (princ "Available commands:  

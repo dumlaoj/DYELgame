@@ -2,6 +2,9 @@
 ;;;; Name: Jordan Dumlao                     Date:03/19/2016
 ;;;; Course: ICS313        Assignment:#5
 ;;;; This code has been taken from Chapter 5 of  Land of Lisp by Conrad Barski
+
+
+
 (defparameter +ID+ "Jordan Dumlao")
 (defun ID ()
   +ID+)
@@ -27,7 +30,7 @@
                         (lockers (pools east door) (entrance west door))
                         (cardio (entrance east door))
                         (pools (lockers west door))
-			(weight(platform east door)(benches west door)(office upstairs door))
+			(weight(platform east door)(benches west door)(office upstairs door)(entrance south door))
 		         (platform (weight west door))
 			  (benches(weight east door))
 			(office (weight downstairs door) (private north door))
@@ -45,20 +48,22 @@
   (apply #'append (mapcar #'describe-path (cdr (assoc location edges)))))
 
 ;;global variable containing all the objects in the world
-(defparameter *objects* '(whiskey bucket frog chain plate exodia left-arm right-arm left-leg right-leg ancient-coin))
+(defparameter *objects* '(protein-shake towel joggers tank-top shoes gloves wrist-straps squat-belt key))
 
 ;;global variable containing the location of each object
-(defparameter *object-locations* '((whiskey entrance)
-                                   (bucket pools)
-                                   (exodia living-room)
-                                   (chain garden)
-                                   (left-arm garden)
-                                   (frog garden)
-                                   (right-arm kitchen)
-                                   (left-leg attic)
-                                   (ancient-coin attic)
-                                   (right-leg garden)
-                                   (plate kitchen)))
+(defparameter *object-locations* '((towel entrance)
+                                   (protein-shake entrance)
+                                   ;(protein-shake lockers)
+                                   ;(protein-shake weight)
+                                   ;(protein-shake platform)
+                                   ;(protein-shake benches)
+                                   (joggers lockers)
+                                   (tank-top lockers)
+                                   (shoes cardio)
+                                   (gloves weight)
+                                   (squat-belt platform)
+                                   (wrist-straps benches)
+                                 ))
 
 
 ;;returns filtered list of locations for which the
@@ -75,7 +80,7 @@
 ;;describes objects at a given location
 (defun describe-objects (loc objs obj-loc)
   (labels ((describe-obj (obj) ;creates local function
-             `(you see a ,obj))) ;returns text about the object	
+             `(you see a ,obj in the room.))) ;returns text about the object	
     (apply #'append (mapcar #'describe-obj (objects-at loc objs obj-loc))))) ;appends all existing objects at loc into a list
 
 ;;default location
@@ -97,9 +102,14 @@
                  (look))
           '(you cannot go that way.)))))
 
+(defparameter *strength* 0)
+
+
 ;;picks up desired object
 (defun pickup (object)
-  (cond ((member object (objects-at *location* *objects* *object-locations*)) ;must be a member of that location
+  (cond ((and(eq object 'protein-shake) (member object (objects-at *location* *objects* *object-locations*)))
+         (setf *strength* (+ *strength* 100)) (push (list object 'shakes) *object-locations*) `(you drank a protein shake your strength is now ,*strength*))
+   ((member object (objects-at *location* *objects* *object-locations*)) ;must be a member of that location
          (push (list object 'body) *object-locations*) ;push onto list body the current object being picked up
          `(you are now carrying the ,object)) ;returns object that is being picked up
         (t '(you cannot get that.)))) ;if object is not there
@@ -132,7 +142,7 @@
              (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
 
 ;;allowed commands the user can choose from
-(defparameter *allowed-commands* '(look walk pickup inventory weld dunk assemble help h location object edge))
+(defparameter *allowed-commands* '(look walk pickup inventory weld dunk assemble help h location object edge challenge))
 
 ;;checks if the first word is allowed in the commands
 (defun game-eval (sexp)
