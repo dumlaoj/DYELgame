@@ -45,20 +45,23 @@
   (apply #'append (mapcar #'describe-path (cdr (assoc location edges)))))
 
 ;;global variable containing all the objects in the world
-(defparameter *objects* '(whiskey bucket frog chain plate exodia left-arm right-arm left-leg right-leg ancient-coin))
+(defparameter *objects* '(protein-shake towel joggers tank-top shoes gloves wrist-straps squat-belt key))
 
 ;;global variable containing the location of each object
-(defparameter *object-locations* '((whiskey entrance)
-                                   (bucket pools)
-                                   (exodia living-room)
-                                   (chain garden)
-                                   (left-arm garden)
-                                   (frog garden)
-                                   (right-arm kitchen)
-                                   (left-leg attic)
-                                   (ancient-coin attic)
-                                   (right-leg garden)
-                                   (plate kitchen)))
+(defparameter *object-locations* '((towel entrance)
+                                   (protein-shake entrance)
+                                   (protein-shake lockers)
+                                   (protein-shake weight)
+                                   (protein-shake platform)
+                                   (protein-shake benches)
+                                   (joggers lockers)
+                                   (tank-top lockers)
+                                   (shoes cardio)
+                                   (gloves weight)
+                                   (squat-belt platform)
+                                   (wrist-straps benches)
+                                   (key office)
+                                 ))
 
 
 ;;returns filtered list of locations for which the
@@ -75,7 +78,7 @@
 ;;describes objects at a given location
 (defun describe-objects (loc objs obj-loc)
   (labels ((describe-obj (obj) ;creates local function
-             `(you see a ,obj))) ;returns text about the object	
+             `(you see a ,obj in the room.))) ;returns text about the object	
     (apply #'append (mapcar #'describe-obj (objects-at loc objs obj-loc))))) ;appends all existing objects at loc into a list
 
 ;;default location
@@ -163,33 +166,32 @@
 ;;checks to see if user has subject and object
 ;;is in current location
 ;;then runs rest of body macro according to command
-(defmacro game-action (command subj obj place &body body)
+(defmacro game-action (command subj place &body body)
   `(progn (defun ,command (subject object)
             (if (and (eq *location* ',place)
                      (eq subject ',subj)
-                     (eq object ',obj)
                      (have ',subj))
                 ,@body
             '(i cant ,command like that.)))
           (pushnew ',command *allowed-commands*)))
 
-(defparameter *chain-welded* nil)
+(defparameter *door-unlocked* nil)
 
 ;;;wizard special actions section
 ;;game-action macro to weld chain and bucket
 ;;check if have bucket and chain isnt welded
 ;;set chain-welded to true and tell user success
-(game-action weld chain bucket attic
-             (if (and (have 'bucket) (not *chain-welded*))
-                 (progn (setf *chain-welded* 't)
-                        '(the chain is now securely welded to the bucket.))
-               '(you do not have a bucket.)))
+(game-action use key office
+             (if (and (have 'key) (not *door-unlocked*))
+                 (progn (setf *door-unlocked* 't)
+                        '(you have unlocked the room in the office))
+               '(you need the key)))
 
 (defparameter *bucket-filled* nil)
 
 ;;game-action macro to dunk bucket into well
 ;;need chain to be welded
-(game-action dunk bucket well garden
+(game-action dunk  well garden
              (if *chain-welded* 
                  (progn (setf *bucket-filled* 't)
                         '(the bucket is now full of water))
@@ -199,7 +201,7 @@
 ;;must have bucket filled with water
 ;;game will win or lose depending on 
 ;;if have frog
-(game-action splash bucket wizard living-room
+(game-action splash bucket living-room
              (cond ((not *bucket-filled*) '(the bucket has nothing in it.))
                    ((have 'frog) '(the wizard awakens and sees that you stole his frog. 
                                    he is so upset he banishes you to the 
@@ -208,14 +210,14 @@
                         he hands you the magic low-carb donut- you win! the end.))))
 
 
-(defparameter *exodia-assembled* nil)
+(defparameter *swole-bro* nil)
 ;;checks if user has all limbs
 (defun has-limbs()
-  (if(and (have 'left-leg) (have 'right-leg) (have 'left-arm) (have 'left-arm)) 't
+  (if(and (have 'towel) (have 'joggers) (have 'tank-top) (have 'showes) (have 'wrist-straps) (have 'gloves) (have 'squat-belt)) 't
     nil))
 ;;if user has all limbs and exodia is not assembled
 ;;assemble Exodia
-(game-action assemble exodia ancient-coin attic
+(game-action assemble exodia attic
   (if (and (has-limbs)(not *exodia-assembled*)) 
                  (progn (setf *exodia-assembled* 't)
                         '(you have assembled exodia the forbidden one! you can now obliterate your opponents))

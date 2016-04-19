@@ -14,6 +14,8 @@
                         (cardio (you are in the cardio room. you see a fat sweaty man running on the treadmill. you cannot get gains doing cardio))
                         (weight(you are in the free weight rooms. there is where you get your bicep curls in for them swoll arms.))
                         (platform(you are in the platform room. squats and deadlifts are done here. you hear the loud noise of people dropping heavy weights on the ground))
+			(office (this is the bosses office))
+			(private (this is the bosses private lifting room. you see him sitting on the chair doing some 10 lb bicep curls. weak! do he even lift? challenge this myrin to a lift off!))
 ))
 
 ;;find the correct item in the list of locations
@@ -25,9 +27,11 @@
                         (lockers (pools east door) (entrance west door))
                         (cardio (entrance east door))
                         (pools (lockers west door))
-			(weight(platform east door)(benches west door))
+			(weight(platform east door)(benches west door)(office upstairs door))
 		         (platform (weight west door))
 			  (benches(weight east door))
+			(office (weight downstairs door) (private north door))
+
 ))
 
 ;;given the edge, describe the path
@@ -44,8 +48,8 @@
 (defparameter *objects* '(whiskey bucket frog chain plate exodia left-arm right-arm left-leg right-leg ancient-coin))
 
 ;;global variable containing the location of each object
-(defparameter *object-locations* '((whiskey entrance chair)
-                                   (bucket living-room)
+(defparameter *object-locations* '((whiskey entrance)
+                                   (bucket pools)
                                    (exodia living-room)
                                    (chain garden)
                                    (left-arm garden)
@@ -70,9 +74,9 @@
 
 ;;describes objects at a given location
 (defun describe-objects (loc objs obj-loc)
-  (labels ((describe-obj (obj obj-loc) ;creates local function
-             `(you see a ,obj on the ,obj-loc))) ;returns text about the object	
-    (apply #'append (mapcar #'describe-obj ((objects-at loc objs obj-loc) (cdr (cdr obj-loc))))))) ;appends all existing objects at loc into a list
+  (labels ((describe-obj (obj) ;creates local function
+             `(you see a ,obj))) ;returns text about the object	
+    (apply #'append (mapcar #'describe-obj (objects-at loc objs obj-loc))))) ;appends all existing objects at loc into a list
 
 ;;default location
 (defparameter *location* 'entrance)
