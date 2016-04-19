@@ -6,7 +6,7 @@
 ;;;
 ;;; by Jerrin Lawi-an and Jordan Dumlao
 
-(defparameter +AUTHORS+ "Jerrin Lawi-an & Jordan Dumlao")
+(defparameter +AUTHORS+ "LITSQUAD")
 
 
 ;;; battle system and stats and stuff
@@ -35,36 +35,36 @@
 	(princ "You engage Wheydolf Hitler!")
 	(battle-loop)
 	(when (player-dead)
-		(princ "You don't even lift, bro. Try again."))
+		(format t "The bro-oss strikes you down. You die. Try again maybe."))
 	(when (boss-dead)
-		(princ "So easy brah. I can curl his max.")))
+		(format t "You defeat Wheydolf! You win!")))
 
 
  ;; the battle cycle entered.
 (defun battle-loop ()
-	(unless (or (player-dead)(boss-dead))
+  (unless (or (player-dead)(boss-dead))
 		(show-player)
 		(unless (boss-dead)
 			(show-boss)
 			(player-attack))
 		(fresh-line)
-		(boss-attack)
-		(battle-loop)))
+   (unless (boss-dead) 
+     (boss-attack))
+    (battle-loop)))
  
 ;; player actions in combat
 (defun player-flex () 
 	(fresh-line)
 	(princ "You flex mightily! Your strength grows!")
-	(setf *player-damage* (+ 1 *player-damage*)))
+	(setf *player-damage* (+ 6 *player-damage*)))
 
 (defun player-attack ()
 	(fresh-line)
-	(princ "What do you do? [f]lex [a]ttack [i]nsult")
+  (princ "What do you do? [f]lex [a]ttack [i]nsult")
+  (fresh-line)
 	(case (read)
-		(f (flex))
-		(a (let ((x (randval (truncate (/ *player-damage* 6)))))
-			(princ "You run up and swing for ")
-			(princ x)
+		(f (player-flex))
+		(a (let ((x (randval (truncate (/ *player-damage* 3)))))
 			(fresh-line)
 			(boss-hit x)))
 		(otherwise (fresh-line)
@@ -78,11 +78,11 @@
 
 ;; boss actions
 (defun boss-attack ()
-  (let ((x  (randval *boss-damage*)))
+  (let  ((x (randval (truncate (/ *boss-damage* 3)))))
                 (fresh-line)
 		(princ "Wheydolf fires up and strikes you for ")
 		(princ x)
-    (princ "damage!")
+    (princ " damage!")
     (fresh-line)
    (decf *player-health* x)))
 
@@ -92,8 +92,10 @@
 (defun boss-hit (x)
   (decf *boss-health* x)
 	(if (boss-dead)
-		(progn (princ "You defeated Wheydolf Hitler!")
-				(princ "You really do lift bro."))
+     (progn (princ "Wheydolf stumbles! ")
+       (princ "He takes ")
+       (princ x)
+       (princ " damage and EXPLODES EVERYWHERE!!!!!"))
 		(progn (princ "You strike Wheydolf for ")
 				(princ x)
 				(princ " damage!"))))
@@ -109,12 +111,11 @@
 	
 (defun init-boss ()
 	(setf *boss-health* 50)
-	(setf *boss-damage* 30))
+	(setf *boss-damage* 20))
 
 (defun init-player ()
 	(setf *player-health* 50)
-	(setf *player-damage* 30)
-	(setf *player-inspired* 0))
+	(setf *player-damage* 20))
   
 (defun player-dead ()
 	(<= *player-health* 0))	
@@ -123,8 +124,7 @@
 	(fresh-line)
 	(princ "You are the swolest around with ")
 	(princ *player-health*) 
-	(princ " health.)
-  (princ *player-spec*))
+	(princ " health."))
 
 (defun show-boss ()
   (fresh-line)

@@ -1,0 +1,191 @@
+CG-USER(1): (game-repl)
+look
+You are at the gym entrance. A hot babe is at working at the front
+ desk. There is a door going west from here. There is a door going
+ north from here. There is a door going east from here. You see a
+ protein-shake in the room. You see a towel in the room.
+pickup protein-shake
+I do not know that command.
+
+pickup protein-shake
+You drank a protein shake your strength is now 100
+
+pickup towel
+You are now carrying the towel
+
+walk east
+You are in the locker rooms. You take a glance at yourself in the
+ mirror. Looking swoll bro. There is a door going east from here. There
+ is a door going west from here. You see a joggers in the room. You see
+ a tank-top in the room.
+
+pickup joggers
+You are now carrying the joggers
+
+pickup tanktop
+You cannot get that.
+
+pickup tank-top
+You are now carrying the tank-top
+
+walk east
+You are at the swimming pools. There are some fine ladies tanning. But
+ you cannot get any gains here. There is a door going west from here.
+
+walk west
+You are in the locker rooms. You take a glance at yourself in the
+ mirror. Looking swoll bro. There is a door going east from here. There
+ is a door going west from here.
+
+walk west
+You are at the gym entrance. A hot babe is at working at the front
+ desk. There is a door going west from here. There is a door going
+ north from here. There is a door going east from here.
+
+walk west
+You are in the cardio room. You see a fat sweaty man running on the
+ treadmill. You cannot get gains doing cardio there is a door going
+ east from here. You see a shoes in the room.
+
+pickup shoes
+You are now carrying the shoes
+
+walk east
+You are at the gym entrance. A hot babe is at working at the front
+ desk. There is a door going west from here. There is a door going
+ north from here. There is a door going east from here.
+
+walk north
+You are in the free weight rooms. There is where you get your bicep
+ curls in for them swoll arms. There is a door going east from here.
+ there is a door going west from here. There is a door going upstairs
+ from here. There is a door going south from here. You see a gloves in
+ the room.
+
+pickup gloves
+You are now carrying the gloves
+
+walk east
+You are in the platform room. Squats and deadlifts are done here. You
+ hear the loud noise of people dropping heavy weights on the ground
+ there is a door going west from here. You see a squat-belt in the
+ room.
+
+pickup squat-belt
+You are now carrying the squat-belt
+
+walk west
+You are in the free weight rooms. There is where you get your bicep
+ curls in for them swoll arms. There is a door going east from here.
+ there is a door going west from here. There is a door going upstairs
+ from here. There is a door going south from here.
+
+walk west
+There is a door going east from here. You see a wrist-straps in the
+ room.
+
+pickup wrist-straps
+You are now carrying the wrist-straps
+
+inventory
+Items- towel joggers tank-top shoes gloves wrist-straps squat-belt
+
+walk east
+You are in the free weight rooms. There is where you get your bicep
+ curls in for them swoll arms. There is a door going east from here.
+ there is a door going west from here. There is a door going upstairs
+ from here. There is a door going south from here.
+
+walk north
+You cannot go that way.
+
+walk upstairs
+This is the bosses office. There is a door going downstairs from here.
+ there is a door going north from here.
+
+walk north
+This is the bosses private lifting room. You see the boss sitting on
+ the chair doing some 10 lb bicep curls. Weak! Do he even lift?
+ challenge this myrin to a lift off! There is a door going south from
+ here.
+
+challenge boss
+You engage Wheydolf Hitler!
+You are the swolest around with 50 health.
+The boss is str8 flexin on you. He has 50 health.
+What do you do? [f]lex [a]ttack [i]nsultf
+
+You flex mightily! Your strength grows!
+Wheydolf fires up and strikes you for 5 damage!
+You are the swolest around with 45 health.
+The boss is str8 flexin on you. He has 50 health.
+What do you do? [f]lex [a]ttack [i]nsultf
+
+You flex mightily! Your strength grows!
+Wheydolf fires up and strikes you for 5 damage!
+You are the swolest around with 40 health.
+The boss is str8 flexin on you. He has 50 health.
+What do you do? [f]lex [a]ttack [i]nsultf
+
+You flex mightily! Your strength grows!
+Wheydolf fires up and strikes you for 2 damage!
+You are the swolest around with 38 health.
+The boss is str8 flexin on you. He has 50 health.
+What do you do? [f]lex [a]ttack [i]nsultf
+
+You flex mightily! Your strength grows!
+Wheydolf fires up and strikes you for 6 damage!
+You are the swolest around with 32 health.
+The boss is str8 flexin on you. He has 50 health.
+What do you do? [f]lex [a]ttack [i]nsultf
+
+You flex mightily! Your strength grows!
+Wheydolf fires up and strikes you for 4 damage!
+You are the swolest around with 28 health.
+The boss is str8 flexin on you. He has 50 health.
+What do you do? [f]lex [a]ttack [i]nsulta
+
+You strike Wheydolf for 1 damage!
+Wheydolf fires up and strikes you for 2 damage!
+You are the swolest around with 26 health.
+The boss is str8 flexin on you. He has 49 health.
+What do you do? [f]lex [a]ttack [i]nsulta
+
+You strike Wheydolf for 5 damage!
+Wheydolf fires up and strikes you for 6 damage!
+You are the swolest around with 20 health.
+The boss is str8 flexin on you. He has 44 health.
+What do you do? [f]lex [a]ttack [i]nsulta
+
+You strike Wheydolf for 16 damage!
+Wheydolf fires up and strikes you for 4 damage!
+You are the swolest around with 16 health.
+The boss is str8 flexin on you. He has 28 health.
+What do you do? [f]lex [a]ttack [i]nsulta
+
+You strike Wheydolf for 2 damage!
+Wheydolf fires up and strikes you for 1 damage!
+You are the swolest around with 15 health.
+The boss is str8 flexin on you. He has 26 health.
+What do you do? [f]lex [a]ttack [i]nsulta
+
+You strike Wheydolf for 2 damage!
+Wheydolf fires up and strikes you for 4 damage!
+You are the swolest around with 11 health.
+The boss is str8 flexin on you. He has 24 health.
+What do you do? [f]lex [a]ttack [i]nsulta
+
+You strike Wheydolf for 3 damage!
+Wheydolf fires up and strikes you for 2 damage!
+You are the swolest around with 9 health.
+The boss is str8 flexin on you. He has 21 health.
+What do you do? [f]lex [a]ttack [i]nsulta
+
+You strike Wheydolf for 16 damage!
+Wheydolf fires up and strikes you for 6 damage!
+You are the swolest around with 3 health.
+The boss is str8 flexin on you. He has 5 health.
+What do you do? [f]lex [a]ttack [i]nsulta
+
+Wheydolf stumbles! He takes 8 damage and EXPLODES EVERYWHERE!!!!!
+You defeat Wheydolf! You win!
