@@ -1,13 +1,8 @@
 ;;;; -*- Mode: LISP; Syntax: Common-lisp; Package: USER; Base: 10 -*-
-;;;; Name: Jordan Dumlao                     Date:03/19/2016
-;;;; Course: ICS313        Assignment:#5
-;;;; This code has been taken from Chapter 5 of  Land of Lisp by Conrad Barski
+;;;; Name: Jordan Dumlao, Jerrin Lawi-an                    Date:04/18/2016
+;;;; Course: ICS313        Assignment:#6
 
 
-
-(defparameter +ID+ "Jordan Dumlao")
-(defun ID ()
-  +ID+)
 
 ;;create global variable *nodes*
 ;;contains list and description of all locations
@@ -103,7 +98,7 @@
                  (look))
           '(you cannot go that way.)))))
 
-
+(defparameter *strength* 0)
 ;;picks up desired object
 (defun pickup (object)
   (cond ((and(eq object 'protein-shake) (member object (objects-at *location* *objects* *object-locations*)))
@@ -141,7 +136,7 @@
              (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
 
 ;;allowed commands the user can choose from
-(defparameter *allowed-commands* '(look walk pickup inventory weld dunk assemble help h location object edge challenge))
+(defparameter *allowed-commands* '(look walk pickup inventory  dunk assemble help h location object edge challenge))
 
 ;;checks if the first word is allowed in the commands
 (defun game-eval (sexp)
@@ -182,13 +177,15 @@
 
 ;;;special actions section
 
+(defparameter *gym-bro* 't)
 ;;macro to challenge the boss
 ;;must have all items to challenge
 (game-action challenge towel boss private
              (cond ((not *gym-bro*) '(you need to get all the items!))
-                   (t '(you challenged the boss))))
+                   (t (progn '(you challenged the boss)
+                        (fight)))))
 
-(defparameter *gym-bro* ’t)
+
 ;;checks if user has all items
 (defun gym-bro()
   (if(and (have 'towel) (have 'joggers) (have 'tank-top) (have 'gloves) (have 'squat-belt) (have 'wrist-straps) (have 'shoes)) 't
@@ -199,11 +196,7 @@
 walk - walk to a direction 
 look - look at current location 
 pickup - pick up items in that location 
-inventory - look at items you have 
-weld - weld the chain and bucket together. you must have both items 
-dunk - put water into the welded bucket. bucket must be welded 
-splash - splash water onto the wizard. must have water int the welded bucket 
-assemble - assemble something awesome. must have the correct pieces")
+inventory - look at items you have ")
 (princ""))
 
 (defun h()
@@ -211,11 +204,7 @@ assemble - assemble something awesome. must have the correct pieces")
 walk - walk to a direction 
 look - look at current location 
 pickup - pick up items in that location 
-inventory - look at items you have 
-weld - weld the chain and bucket together. you must have both items 
-dunk - put water into the welded bucket. bucket must be welded 
-splash - splash water onto the wizard. must have water int the welded bucket 
-assemble - assemble something awesome. must have the correct pieces")
+inventory - look at items you have ")
 (princ""))
 
 ;;adds new object to game
@@ -262,3 +251,130 @@ assemble - assemble something awesome. must have the correct pieces")
   (cond ((null l) nil)
         ((atom l) (list l))
         (t (loop for a in l appending (flatten a)))))
+
+(defun fight ()
+	(boss-battle))
+
+(defparameter *in-battle* nil)
+(defparameter *player-health* nil)
+(defparameter *player-damage* nil)
+
+
+(defparameter *boss-health* nil)
+(defparameter *boss-damage* nil)
+
+
+;; Calls functions which set player and boss stats,
+;; then proceeds to the battle functions.
+(defun boss-battle ()
+	(init-boss)
+	(init-player)
+	(fresh-line)
+	(princ "You engage Wheydolf Hitler!")
+	(battle-loop)
+	(when (player-dead)
+		(format t "The bro-oss strikes you down. You die. Try again maybe."))
+	(when (boss-dead)
+   (progn (format t "You defeat Wheydolf! You win!"))))
+
+
+ ;; the battle cycle entered.
+(defun battle-loop ()
+  (unless (or (player-dead)(boss-dead))
+		(show-player)
+		(unless (boss-dead)
+			(show-boss)
+			(player-attack))
+		(fresh-line)
+   (unless (boss-dead) 
+     (boss-attack))
+    (battle-loop)))
+ 
+;; player actions in combat
+(defun player-flex () 
+	(fresh-line)
+	(princ "You flex mightily! Your strength grows!")
+	(setf *player-damage* (+ 6 *player-damage*)))
+
+(defun player-attack ()
+	(fresh-line)
+  (princ "What do you do? [f]lex [a]ttack [i]nsult")
+  (fresh-line)
+	(case (read)
+		(f (player-flex))
+		(a (let ((x (randval (truncate (/ *player-damage* 3)))))
+			(fresh-line)
+			(boss-hit x)))
+		(otherwise (fresh-line)
+			(princ "Unsure of what to do, you resort to drastic measures.")
+			(fresh-line)
+             (princ "You proudly shout at him: ")
+             (princ "DO YOU EVEN LIFT BRO?")
+                        (fresh-line)
+			(boss-hit 1))))
+
+
+;; boss actions
+(defun boss-attack ()
+  (let  ((x (randval (truncate (/ *boss-damage* 3)))))
+                (fresh-line)
+		(princ "Wheydolf fires up and strikes you for ")
+		(princ x)
+    (princ " damage!")
+    (fresh-line)
+   (decf *player-health* x)))
+
+(defun boss-dead ()
+  (<= *boss-health* 0))
+
+(defun boss-hit (x)
+  (decf *boss-health* x)
+	(if (boss-dead)
+     (progn (princ "Wheydolf stumbles! ")
+       (princ "He takes ")
+       (princ x)
+       (princ " damage and EXPLODES EVERYWHERE!!!!!"))
+		(progn (princ "You strike Wheydolf for ")
+				(princ x)
+				(princ " damage!"))))
+	
+
+		
+ 
+
+ 
+;;; various helper functions
+
+
+	
+(defun init-boss ()
+	(setf *boss-health* 50)
+	(setf *boss-damage* 20))
+
+(defun init-player ()
+	(setf *player-health* 50)
+	(setf *player-damage* 20))
+  
+(defun player-dead ()
+	(<= *player-health* 0))	
+	
+(defun show-player ()
+	(fresh-line)
+	(princ "You are the swolest around with ")
+	(princ *player-health*) 
+	(princ " health."))
+
+(defun show-boss ()
+  (fresh-line)
+  (princ "The boss is str8 flexin on you. He has ")
+  (princ *boss-health*)
+  (princ " health."))
+
+(defparameter *player-damaged* nil)
+(defun player-hurt ()
+  (if (<= *player-health* 15)
+      (setf *player-damaged* 't)))
+  
+;; Generates a random value from 1 to n. From book.
+(defun randval (n)
+  (1+ (random (max 1 n))))

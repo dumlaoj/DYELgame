@@ -136,7 +136,7 @@
              (cons (car cmd) (mapcar #'quote-it (cdr cmd))))))
 
 ;;allowed commands the user can choose from
-(defparameter *allowed-commands* '(look walk pickup inventory  dunk assemble help h location object edge challenge))
+(defparameter *allowed-commands* '(look walk pickup inventory  dunk assemble help h location object edge challenge fight))
 
 ;;checks if the first word is allowed in the commands
 (defun game-eval (sexp)
@@ -182,7 +182,8 @@
 ;;must have all items to challenge
 (game-action challenge towel boss private
              (cond ((not *gym-bro*) '(you need to get all the items!))
-                   (t (progn '(you challenged the boss)
+                   (t (progn '(you challenge
+d the boss)
                         (fight)))))
 
 
